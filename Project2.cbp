@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Project2" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="Project2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="Project2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Linker>
+			<Add library="glfw3" />
+			<Add library="gdi32" />
+			<Add library="glu32" />
+			<Add library="opengl32" />
+		</Linker>
+		<Unit filename="CS473_182_ICE15_ModelLoader.depend" />
+		<Unit filename="CS473_182_ICE15_ModelLoader.layout" />
+		<Unit filename="Camera.cpp" />
+		<Unit filename="Camera.h" />
+		<Unit filename="Cat.cpp" />
+		<Unit filename="Cat.h" />
+		<Unit filename="Cube.cpp" />
+		<Unit filename="Cube.h" />
+		<Unit filename="House.cpp" />
+		<Unit filename="House.h" />
+		<Unit filename="ImportOBJ.cpp" />
+		<Unit filename="ImportOBJ.h" />
+		<Unit filename="Mouse.cpp" />
+		<Unit filename="Mouse.h" />
+		<Unit filename="Project2.cbp" />
+		<Unit filename="Project2.depend" />
+		<Unit filename="Project2.exe" />
+		<Unit filename="Shader.cpp" />
+		<Unit filename="Shader.h" />
+		<Unit filename="Title Screen.pptx" />
+		<Unit filename="fShadTex.glsl" />
+		<Unit filename="fShader.glsl" />
+		<Unit filename="glad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.cpp" />
+		<Unit filename="oGL_Tools.cpp" />
+		<Unit filename="oGL_Tools.h" />
+		<Unit filename="stb_image.h" />
+		<Unit filename="vShadTex.glsl" />
+		<Unit filename="vShader.glsl" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,91 @@
+# depslib dependency file v1.0
+1518615416 source:c:\users\x94364\desktop\projects\modelloader\camera.cpp
+	"Camera.h"
+	"oGL_Tools.h"
+	<iostream>
+
+1518615400 c:\users\x94364\desktop\projects\modelloader\camera.h
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+
+1518112678 c:\users\x94364\desktop\projects\modelloader\ogl_tools.h
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	"Shader.h"
+	<cmath>
+
+1518064206 c:\users\x94364\desktop\projects\modelloader\shader.h
+	<glm/glm.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<glad/glad.h>
+	<string>
+	<fstream>
+	<sstream>
+	<iostream>
+
+1518613600 source:c:\users\x94364\desktop\projects\modelloader\cube.cpp
+	"Cube.h"
+	"oGL_Tools.h"
+
+1520527514 c:\users\x94364\desktop\projects\modelloader\cube.h
+	<glm/glm.hpp>
+	"Shader.h"
+
+1507928328 source:c:\users\x94364\desktop\projects\modelloader\glad.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<glad/glad.h>
+	<windows.h>
+	<dlfcn.h>
+
+1520006912 source:c:\users\x94364\desktop\projects\modelloader\importobj.cpp
+	"ImportOBJ.h"
+	<stdlib.h>
+	<iostream>
+	<sstream>
+	<fstream>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+
+1518634414 c:\users\x94364\desktop\projects\modelloader\importobj.h
+	<string>
+	<vector>
+	<map>
+	<glm/glm.hpp>
+
+1520527599 source:c:\users\x94364\desktop\projects\modelloader\main.cpp
+	<glm/glm.hpp>
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<glad/glad.h>
+	<GLFW/glfw3.h>
+	<stb_image.h>
+	"Shader.h"
+	"Cube.h"
+	"Cat.h"
+	"Camera.h"
+	"oGL_Tools.h"
+	"ImportOBJ.h"
+	<iostream>
+
+1518112702 source:c:\users\x94364\desktop\projects\modelloader\ogl_tools.cpp
+	"oGL_Tools.h"
+	<stb_image.h>
+	<stdio.h>
+	<iostream>
+
+1518065952 source:c:\users\x94364\desktop\projects\modelloader\shader.cpp
+	"Shader.h"
+
+1520523966 source:c:\users\x94364\desktop\projects\modelloader\cat.cpp
+	"Cat.h"
+	"oGL_Tools.h"
+
+1520527590 c:\users\x94364\desktop\projects\modelloader\cat.h
+	<glm/glm.hpp>
+	"Shader.h"
+	"ImportOBJ.h"
+

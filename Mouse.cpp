@@ -6,6 +6,7 @@ Mouse::Mouse()
 {
     this->pos = glm::vec3(-3.0f, -1.0f, 3.0f);
     this->scale = 1;
+    this->Escape = false;
 }
 
 void Mouse::initialize(ImportOBJ importer) {
@@ -20,6 +21,7 @@ void Mouse::draw(Shader shadProgram) {
     //model = glm::rotate(model, glm::radians(this->rotateAngle), this->rotAxis);
     model = glm::scale(model, glm::vec3(this->scale, this->scale, this->scale));
     shadProgram.setMatrix("model", model);
+    printPos();
 
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, this->numCombined);
@@ -41,8 +43,17 @@ void Mouse::strafeRight(float amt) {
 
 void Mouse::setPos(glm::vec3 newPos) {this->pos = newPos;}
 void Mouse::setScale(float newScale) {this->scale = newScale;}
+void Mouse::setCheckEscape(bool check) {this->Escape = check;}
+void Mouse::checkEscape() {
+    if (this->pos.z <= -14 && this->pos.x > -2.5 && this->pos.x < -1 ) this->Escape = true;
+}
+void Mouse::reset() {
+    this->pos = glm::vec3(-3.0f, -1.0f, 3.0f);
+    setCheckEscape(false);
+}
 
 glm::vec3 Mouse::getPos() {return this->pos;}
+bool Mouse::getCheckEscape() {return this->Escape;}
 unsigned int Mouse::getVAO() {return this->VAO;}
 unsigned int Mouse::getnumCombined() {return this->numCombined;}
 

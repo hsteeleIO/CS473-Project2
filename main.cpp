@@ -18,18 +18,30 @@
 #include "Camera.h"
 #include "oGL_Tools.h"
 #include "ImportOBJ.h"
+#include "Light.h"
 
 #include <iostream>
+#include <cstdlib>
 
 void switchToMain(GLFWwindow* window);
 void switchToTitle(GLFWwindow* window);
+void switchToInstructions(GLFWwindow* window);
 void mainLoopTitleScreen(GLFWwindow* window);
+void mainLoopInstructionScreen(GLFWwindow* window);
 void mainLoopInteractive(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mousePosCallback(GLFWwindow* window, double mX, double mY);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+void catCatchMouseCheck();
 void processInput(GLFWwindow* window);
+
+void processSpecularLightInput(GLFWwindow* window);
+void processDiffuseLightInput(GLFWwindow* window);
+void processAmbientLightInput(GLFWwindow* window);
+void processLightColorInput(GLFWwindow* window);
+void processLightPosInput(GLFWwindow* window);
+void processShininess(GLFWwindow* window);
 
 GLFWwindow* setupOpenGL(int width, int height, std::string name);
 
@@ -44,6 +56,7 @@ Cat cat1;
 Mouse mouse;
 House house;
 Camera cam = Camera();
+Light lightSrc = Light();
 
 double deltaTime = 0.0;
 double lastFrame = 0.0;
@@ -53,11 +66,14 @@ float mouseX = 400;
 float mouseY = 300;
 float mouseSensitivity = 0.05;
 
+bool titleScreen = true;
 int titleVAO;
 int titleTex;
+int instructionVAO;
+int instructionTex;
 
 int displayMode = 1;
-// 1 = title, 0 = interactive
+// 2 = instructions, 1 = title, 0 = interactive
 
 
 int main() {
@@ -85,9 +101,12 @@ int main() {
 
     titleVAO = rectangleTex(0.0, 10.0, 10.0, 10.0);
     titleTex = loadTexture("textures/title.png", GL_RGBA);
+    instructionVAO = rectangleTex(0.0, 10.0, 10.0, 10.0);
+    instructionTex = loadTexture("textures/instructions.png", GL_RGBA);
 
     while (!glfwWindowShouldClose(window)) {
         if (displayMode == 1) mainLoopTitleScreen(window);
+        else if (displayMode == 2) mainLoopInstructionScreen(window);
         else mainLoopInteractive(window);
     }
 
@@ -100,14 +119,6 @@ int main() {
 void switchToMain(GLFWwindow* window) {
     lastFrame = glfwGetTime();
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //glfwGetCursorPos(window, &mouseX, &mouseY);
-    /*if (firstTime) {
-        cam.setPos(glm::vec3(0.0, 0.0, 3.0));
-        cam.setLookAt(glm::vec3(0.0, 0.0, 0.0));
-        cam.setRollPitchYaw(glm::vec3(0.0, 0.0, 0.0));
-        firstTime = false;
-    }*/
-
     displayMode = 0;
 }
 
@@ -118,6 +129,14 @@ void switchToTitle(GLFWwindow* window) {
     stdProgram.use();
 
     displayMode = 1;
+}
+
+void switchToInstructions(GLFWwindow* window) {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glDisable(GL_DEPTH_TEST);
+    stdProgram.use();
+
+    displayMode = 2;
 }
 
 void mainLoopTitleScreen(GLFWwindow* window) {
@@ -140,6 +159,26 @@ void mainLoopTitleScreen(GLFWwindow* window) {
     glfwPollEvents();
 }
 
+void mainLoopInstructionScreen(GLFWwindow* window) {
+    processInput(window);
+    //glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    stdProgramNorm.use();
+    stdProgramNorm.setDrawColor(WHITE);
+    stdProgramNorm.setMatrix("view", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("model", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("projection", glm::ortho(.0, 10.0, .0, 10.0, -1.0, 1.0));
+
+    stdProgramNorm.useOneTex();
+    glBindTexture(GL_TEXTURE_2D, instructionTex);
+    glBindVertexArray(instructionVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
+
 void mainLoopInteractive(GLFWwindow* window) {
     glEnable(GL_DEPTH_TEST);
     double currentFrame = glfwGetTime();
@@ -149,6 +188,12 @@ void mainLoopInteractive(GLFWwindow* window) {
     processInput(window);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    /*
+    lightShader.use();
+    lightShader.setMatrix("view", cam.genViewMatrix());
+    lightShader.setMatrix("projection", glm::perspective(glm::radians(45.0), 1.0, 0.1, 100.0));
+    lightSrc.setUniforms(lightShader, cam);*/
+
     stdProgram.use();
     stdProgram.setMatrix("view", glm::mat4(1.0f));
     stdProgram.setMatrix("projection", glm::perspective(glm::radians(45.0), 1.0, 0.1, 100.0));
@@ -157,7 +202,7 @@ void mainLoopInteractive(GLFWwindow* window) {
     stdProgram.noTextures();
 
     house.draw(stdProgram);
-    mouse.draw(stdProgram);
+    if (!mouse.getCheckEscape()) mouse.draw(stdProgram);
     cat1.printPos();
     cat1.draw(stdProgram);
     glBindVertexArray(0);
@@ -186,15 +231,28 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     // Used the displayMousePos debug flag to determine what screen coordinates
     // correspond to the "Start" button on the texture.
     if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE) {
-        if (mouseX >= 283 && mouseX <= 520 && mouseY >= 630 && mouseY <= 697) {
+        if (mouseX >= 475 && mouseX <= 636 && mouseY >= 630 && mouseY <= 700) {
             switchToMain(window);
         }
+        else if (mouseX >= 103 && mouseX <= 451 && mouseY >= 630 && mouseY <= 700) {
+            if (titleScreen) switchToInstructions(window);
+            else switchToTitle(window);
+            titleScreen = !titleScreen;
+        }
     }
-    std::cout << "Mouse button: " << button << " with " << action << " and " << mods << " at pos " << mouseX << ", " << mouseY << "\n";
+    std::cout << "Mouse button: " << button << " with " << action << " and " << mods << " at pos " << mouseX << ", " << mouseY << "\r";
 }
 
 void mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     if (!cam.getFreeCam()) cam.goForward(camSpeed * deltaTime * yOffset * 50);
+}
+
+void catCatchMouseCheck(){
+    glm::vec3 mP = mouse.getPos();
+    glm::vec3 cP = cat1.getPos();
+    float diff = std::abs(mP.x-cP.x)+std::abs(mP.y-cP.y)+std::abs(mP.z-cP.z);
+    if (diff < 2) mouse.setCheckEscape(true);
+    std::cout << "diff: " << diff << "\r";
 }
 
 void processInput(GLFWwindow* window) {
@@ -206,6 +264,7 @@ void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_F1)) switchToTitle(window);
     if (glfwGetKey(window, GLFW_KEY_P)) switchToMain(window);
+
 
     if (glfwGetKey(window, GLFW_KEY_L)) {
         cam.lockOnTo(cat1.getPos(), 6.0);
@@ -224,14 +283,18 @@ void processInput(GLFWwindow* window) {
         std::cout << "Lock off\n";
     }
     if (cat1.getLock()){
-        if (glfwGetKey(window, GLFW_KEY_W)) cat1.goForward(camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_S)) cat1.goForward(-camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_D)) cat1.strafeRight(camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_A)) cat1.strafeRight(-camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_UP)) mouse.goForward(camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_DOWN)) mouse.goForward(-camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_RIGHT)) mouse.strafeRight(camSpeed * deltaTime * 1.5);
-        if (glfwGetKey(window, GLFW_KEY_LEFT)) mouse.strafeRight(-camSpeed * deltaTime * 1.5);
+        if (glfwGetKey(window, GLFW_KEY_W)) cat1.goForward(camSpeed * deltaTime * 5.0);
+        if (glfwGetKey(window, GLFW_KEY_S)) cat1.goForward(-camSpeed * deltaTime * 5.0);
+        if (glfwGetKey(window, GLFW_KEY_D)) cat1.strafeRight(camSpeed * deltaTime * 5.0);
+        if (glfwGetKey(window, GLFW_KEY_A)) cat1.strafeRight(-camSpeed * deltaTime * 5.0);
+        if (glfwGetKey(window, GLFW_KEY_UP)) mouse.goForward(camSpeed * deltaTime * 6.5);
+        if (glfwGetKey(window, GLFW_KEY_DOWN)) mouse.goForward(-camSpeed * deltaTime * 6.5);
+        if (glfwGetKey(window, GLFW_KEY_RIGHT)) mouse.strafeRight(camSpeed * deltaTime * 6.5);
+        if (glfwGetKey(window, GLFW_KEY_LEFT)) mouse.strafeRight(-camSpeed * deltaTime * 6.5);
+        if (glfwGetKey(window, GLFW_KEY_R)) mouse.reset();
+        cam.setLookAt(cat1.getPos());
+        mouse.checkEscape();
+        catCatchMouseCheck();
     }
     else {
         if (glfwGetKey(window, GLFW_KEY_W)) cam.goForward(camSpeed * deltaTime);

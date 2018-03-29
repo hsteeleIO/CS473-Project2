@@ -18,8 +18,12 @@ class Mouse
         void setPos(glm::vec3 newPos);
         void setRotation(float newAngle);
         void setScale(float newScale);
+        void setCheckEscape(bool check);
+        void checkEscape();
+        void reset();
 
         glm::vec3 getPos();
+        bool getCheckEscape();
         unsigned int getVAO();
         unsigned int getnumCombined();
         void printPos();
@@ -29,6 +33,7 @@ class Mouse
     private:
         glm::vec3 pos;
         float scale;
+        bool Escape;
 
         unsigned int VAO;
         unsigned int numCombined;

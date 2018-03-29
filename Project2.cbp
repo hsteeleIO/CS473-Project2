@@ -47,6 +47,8 @@
 		<Unit filename="House.h" />
 		<Unit filename="ImportOBJ.cpp" />
 		<Unit filename="ImportOBJ.h" />
+		<Unit filename="Light.cpp" />
+		<Unit filename="Light.h" />
 		<Unit filename="Mouse.cpp" />
 		<Unit filename="Mouse.h" />
 		<Unit filename="Project2.cbp" />
@@ -55,7 +57,10 @@
 		<Unit filename="Shader.cpp" />
 		<Unit filename="Shader.h" />
 		<Unit filename="Title Screen.pptx" />
+		<Unit filename="fShadLight.glsl" />
+		<Unit filename="fShadNorm.glsl" />
 		<Unit filename="fShadTex.glsl" />
+		<Unit filename="fShadText.glsl" />
 		<Unit filename="fShader.glsl" />
 		<Unit filename="glad.c">
 			<Option compilerVar="CC" />
@@ -64,7 +69,10 @@
 		<Unit filename="oGL_Tools.cpp" />
 		<Unit filename="oGL_Tools.h" />
 		<Unit filename="stb_image.h" />
+		<Unit filename="vShadLight.glsl" />
+		<Unit filename="vShadNorm.glsl" />
 		<Unit filename="vShadTex.glsl" />
+		<Unit filename="vShadText.glsl" />
 		<Unit filename="vShader.glsl" />
 		<Extensions>
 			<code_completion />

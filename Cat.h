@@ -15,6 +15,7 @@ class Cat
         void changeLock(bool val);
         void goForward(float amt);
         void strafeRight(float amt);
+        void rotateCatBy(float amt);
 
         void setPos(glm::vec3 newPos);
         void setRotation(float newAngle);

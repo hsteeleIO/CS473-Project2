@@ -111,6 +111,10 @@ void Shader::setFloat(const string &name, float value) const {
     glUniform1f(glGetUniformLocation(this->ID, name.c_str()), value);
 }
 
+void Shader::setVec3(const std::string &name, glm::vec3 vec) const{
+    glUniform3f(glGetUniformLocation(this->ID, name.c_str()), vec.x, vec.y, vec.z);
+}
+
 void Shader::setDrawColor(float r, float g, float b, float a) const {
     glUniform4f(glGetUniformLocation(this->ID, "drawColor"), r, g, b, a);
 }

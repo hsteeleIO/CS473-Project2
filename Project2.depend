@@ -210,7 +210,7 @@
 	"Shader.h"
 	"ImportOBJ.h"
 
-1522077683 source:c:\users\x94364\desktop\projects\cs473-project2\camera.cpp
+1523630723 source:c:\users\x94364\desktop\projects\cs473-project2\camera.cpp
 	"Camera.h"
 	"oGL_Tools.h"
 	<iostream>
@@ -227,7 +227,7 @@
 	"Shader.h"
 	<cmath>
 
-1522077683 c:\users\x94364\desktop\projects\cs473-project2\shader.h
+1523977594 c:\users\x94364\desktop\projects\cs473-project2\shader.h
 	<glm/glm.hpp>
 	<glm/gtc/type_ptr.hpp>
 	<glad/glad.h>
@@ -236,16 +236,16 @@
 	<sstream>
 	<iostream>
 
-1522289094 source:c:\users\x94364\desktop\projects\cs473-project2\cat.cpp
+1524356948 source:c:\users\x94364\desktop\projects\cs473-project2\cat.cpp
 	"Cat.h"
 	"oGL_Tools.h"
 
-1522165369 c:\users\x94364\desktop\projects\cs473-project2\cat.h
+1522942949 c:\users\x94364\desktop\projects\cs473-project2\cat.h
 	<glm/glm.hpp>
 	"Shader.h"
 	"ImportOBJ.h"
 
-1522077683 c:\users\x94364\desktop\projects\cs473-project2\importobj.h
+1524496991 c:\users\x94364\desktop\projects\cs473-project2\importobj.h
 	<string>
 	<vector>
 	<map>
@@ -267,7 +267,7 @@
 	<windows.h>
 	<dlfcn.h>
 
-1522077683 source:c:\users\x94364\desktop\projects\cs473-project2\house.cpp
+1524357105 source:c:\users\x94364\desktop\projects\cs473-project2\house.cpp
 	"House.h"
 	"oGL_Tools.h"
 
@@ -276,16 +276,18 @@
 	"Shader.h"
 	"ImportOBJ.h"
 
-1522077683 source:c:\users\x94364\desktop\projects\cs473-project2\importobj.cpp
+1524498099 source:c:\users\x94364\desktop\projects\cs473-project2\importobj.cpp
 	"ImportOBJ.h"
 	<stdlib.h>
 	<iostream>
 	<sstream>
 	<fstream>
+	"oGL_Tools.h"
 	<glad/glad.h>
 	<GLFW/glfw3.h>
+	<string>
 
-1522290158 source:c:\users\x94364\desktop\projects\cs473-project2\main.cpp
+1524495299 source:c:\users\x94364\desktop\projects\cs473-project2\main.cpp
 	<glm/glm.hpp>
 	<glm/gtc/matrix_transform.hpp>
 	<glm/gtc/type_ptr.hpp>
@@ -298,19 +300,21 @@
 	"Cat.h"
 	"Mouse.h"
 	"House.h"
+	"Item.h"
 	"Camera.h"
 	"oGL_Tools.h"
 	"ImportOBJ.h"
 	"Light.h"
+	"Font.h"
 	<iostream>
 	<cstdlib>
 
-1522289368 c:\users\x94364\desktop\projects\cs473-project2\mouse.h
+1523976372 c:\users\x94364\desktop\projects\cs473-project2\mouse.h
 	<glm/glm.hpp>
 	"Shader.h"
 	"ImportOBJ.h"
 
-1522289651 source:c:\users\x94364\desktop\projects\cs473-project2\mouse.cpp
+1524356954 source:c:\users\x94364\desktop\projects\cs473-project2\mouse.cpp
 	"Mouse.h"
 	"oGL_Tools.h"
 
@@ -320,15 +324,38 @@
 	<stdio.h>
 	<iostream>
 
-1522077683 source:c:\users\x94364\desktop\projects\cs473-project2\shader.cpp
+1523977809 source:c:\users\x94364\desktop\projects\cs473-project2\shader.cpp
 	"Shader.h"
 
-1522164291 source:c:\users\x94364\desktop\projects\cs473-project2\light.cpp
+1524495515 source:c:\users\x94364\desktop\projects\cs473-project2\light.cpp
 	"Light.h"
 
-1522078459 c:\users\x94364\desktop\projects\cs473-project2\light.h
+1523979756 c:\users\x94364\desktop\projects\cs473-project2\light.h
 	<glm/glm.hpp>
 	"Shader.h"
 	"Camera.h"
+	"ImportOBJ.h"
 	<string>
+
+1524498384 source:c:\users\x94364\desktop\projects\cs473-project2\item.cpp
+	"Item.h"
+	"oGL_Tools.h"
+
+1524498355 c:\users\x94364\desktop\projects\cs473-project2\item.h
+	<glm/glm.hpp>
+	"Shader.h"
+	"ImportOBJ.h"
+	<string>
+
+1517587461 source:c:\users\x94364\desktop\projects\cs473-project2\font.cpp
+	"Font.h"
+	"oGL_Tools.h"
+	<iostream>
+	<glm/gtc/matrix_transform.hpp>
+	<stdlib.h>
+
+1517510462 c:\users\x94364\desktop\projects\cs473-project2\font.h
+	"Shader.h"
+	<string>
+	<glm/glm.hpp>
 

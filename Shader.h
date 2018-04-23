@@ -29,6 +29,7 @@ class Shader
         void setBool(const std::string &name, bool value) const;
         void setInt(const std::string &name, int value) const;
         void setFloat(const std::string &name, float value) const;
+        void setVec3(const std::string &name, glm::vec3 vec) const;
 
         void setDrawColor(float r, float g, float b, float a) const;
         void setDrawColor(glm::vec4 rgba) const;
@@ -37,6 +38,7 @@ class Shader
         void useOneTex(unsigned int tex1=0) const;
         void useTwoTex(float mixT2 = 0.5, unsigned int tex1=0, unsigned int tex2=1) const;
         void noTextures() const;
+
 
     private:
         std::string vertexPath;

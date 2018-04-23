@@ -15,16 +15,19 @@ class ImportOBJ{
         /** Returns a VAO after loading the .OBJ/.MTL files
           * Only provide the base name (without .OBJ/.MTL extension) */
         int loadFiles(std::string name_without_file_extension);
-        bool debugOutput = true;
+        bool debugOutput = false;
 
         int getNumCombined();
+        int getTextID();
 
     private:
         struct CompleteVertex {
             glm::vec3 Position;
             glm::vec3 Normal;
             glm::vec2 TexCoords;
-            glm::vec3 Color;
+            glm::vec3 DiffuseColor;
+            glm::vec3 SpecularColor;
+            float Shininess;
         };
 
         void readMTLFile(std::string fName);
@@ -40,6 +43,9 @@ class ImportOBJ{
         std::vector<CompleteVertex> combinedData;
         std::map<std::string, int> matAbbrev;
         std::vector<glm::vec3> matDiffuse;
+        std::vector<glm::vec3> matSpecular;
+        std::vector<float> matShiny;
+        std::vector<int> map_Kd;
 
         void readLineFace(std::string line);
         void readFace(std::string lineSegment);

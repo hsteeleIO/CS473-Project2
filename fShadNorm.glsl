@@ -20,4 +20,5 @@ void main() {
     }
 
     FragColor = texColor * drawColor;
+
 }

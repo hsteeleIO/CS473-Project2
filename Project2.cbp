@@ -43,10 +43,14 @@
 		<Unit filename="Cat.h" />
 		<Unit filename="Cube.cpp" />
 		<Unit filename="Cube.h" />
+		<Unit filename="Font.cpp" />
+		<Unit filename="Font.h" />
 		<Unit filename="House.cpp" />
 		<Unit filename="House.h" />
 		<Unit filename="ImportOBJ.cpp" />
 		<Unit filename="ImportOBJ.h" />
+		<Unit filename="Item.cpp" />
+		<Unit filename="Item.h" />
 		<Unit filename="Light.cpp" />
 		<Unit filename="Light.h" />
 		<Unit filename="Mouse.cpp" />
@@ -62,6 +66,7 @@
 		<Unit filename="fShadTex.glsl" />
 		<Unit filename="fShadText.glsl" />
 		<Unit filename="fShader.glsl" />
+		<Unit filename="fShaderT.glsl" />
 		<Unit filename="glad.c">
 			<Option compilerVar="CC" />
 		</Unit>

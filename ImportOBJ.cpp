@@ -3,9 +3,11 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include "oGL_Tools.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 ImportOBJ::ImportOBJ() {
 }
@@ -49,6 +51,25 @@ void ImportOBJ::readMTLFile(std::string fName) {
             glm::vec3 color = getVec3(curLine);
             this->matDiffuse.push_back(color);
             //std::cout << "Kd is: " << curLine << "\n";
+        }
+        else if (linePrefix == "Ks") {
+            glm::vec3 color = getVec3(curLine);
+            this->matSpecular.push_back(color);
+            //std::cout << "Ks is: " << curLine << "\n";
+        }
+        else if (linePrefix == "Ns") {
+            float shiny = strtof(curLine.substr(7).c_str(), NULL);
+            this->matShiny.push_back(shiny);
+            //std::cout << "Ni is: " << curLine << "\n";
+        }
+        else if (linePrefix == "map_Kd") {
+            std::string line = curLine;
+            int lastSlashPos = line.rfind("\\");
+            std::string name = "textures\\";
+            std::string fileName = line.substr(lastSlashPos+1, line.length()-lastSlashPos).c_str();
+            int texture = loadTexture(name + fileName);
+            this->map_Kd.push_back(texture);
+            //std::cout << "Ni is: " << curLine << "\n";
         }
     }
 }
@@ -126,6 +147,10 @@ int ImportOBJ::getNumCombined() {
     return this->combinedData.size();
 }
 
+int ImportOBJ::getTextID() {
+    return this->map_Kd.at(0);
+}
+
 /** Generates VAO from stored vertices and texture coordinates. */
 int ImportOBJ::genOBJ_VAO() {
 
@@ -146,8 +171,14 @@ int ImportOBJ::genOBJ_VAO() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, TexCoords));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, Color));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, DiffuseColor));
     glEnableVertexAttribArray(3);
+
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, SpecularColor));
+    glEnableVertexAttribArray(4);
+
+    glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, Shininess));
+    glEnableVertexAttribArray(5);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -191,8 +222,10 @@ void ImportOBJ::readFace(std::string lineSegment) {
     newVert.Position = this->vertices.at(x);
     newVert.TexCoords = this->textCoords.at(y);
     newVert.Normal = this->normals.at(z);
-    if (this->curMat != -1) newVert.Color = this->matDiffuse.at(this->curMat);
-    else newVert.Color = glm::vec3(1.0, 1.0, 1.0);
+    if (this->curMat != -1) newVert.DiffuseColor = this->matDiffuse.at(this->curMat);
+    else newVert.DiffuseColor = glm::vec3(1.0, 1.0, 1.0);
+    newVert.SpecularColor = this->matSpecular.at(this->curMat);
+    newVert.Shininess = this->matShiny.at(this->curMat);
 
     this->combinedData.push_back(newVert);
 }

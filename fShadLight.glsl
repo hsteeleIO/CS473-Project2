@@ -22,6 +22,9 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 NormVec;
 in vec3 FragPos;
+in vec3 DiffuseColor;
+in vec3 SpecularColor;
+in float Shiny;
 
 uniform vec3 camPos;
 
@@ -29,10 +32,10 @@ uniform Material mat;
 uniform LightInfo light;
 
 void main() {
-    vec3 matColor = mat.diffuse;
+    vec3 matColor = DiffuseColor;
     if (mat.useDiffuseMap) matColor = vec3(texture(mat.diffuseMap, TexCoord));
 
-    vec3 specColor = mat.specular;
+    vec3 specColor = SpecularColor;
     if (mat.useSpecularMap) specColor = vec3(texture(mat.specularMap, TexCoord));
 
     // Ambient lighting:
@@ -47,7 +50,7 @@ void main() {
     // Specular lighting
     vec3 viewDir = normalize(camPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), mat.shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), Shiny);
     vec3 specular = light.specularStrength * spec * light.color * specColor;
 
     // Total lighting

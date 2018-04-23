@@ -13,7 +13,8 @@ class Mouse
         void draw(Shader shadProgram);
 
         void goForward(float amt);
-        void strafeRight(float amt);
+        void rotateMouseBy(float amt);
+        void moveMouseBy(float X, float Z);
 
         void setPos(glm::vec3 newPos);
         void setRotation(float newAngle);
@@ -23,7 +24,7 @@ class Mouse
         void reset();
 
         glm::vec3 getPos();
-        bool getCheckEscape();
+        bool hasEscaped();
         unsigned int getVAO();
         unsigned int getnumCombined();
         void printPos();
@@ -32,6 +33,8 @@ class Mouse
 
     private:
         glm::vec3 pos;
+        float rotateAngle;
+        glm::vec3 rotAxis;
         float scale;
         bool Escape;
 

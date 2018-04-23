@@ -5,7 +5,7 @@
 
 Camera::Camera()
 {
-    this->position = glm::vec3(0.0, 0.0, 3.0);
+    this->position = glm::vec3(-23.1, 25.3, 36.1);
     this->lookAt = glm::vec3(0.0, 0.0, 0.0);
     this->rollPitchYaw = glm::vec3(0.0, 0.0, 0.0);
     this->freeCam = false;

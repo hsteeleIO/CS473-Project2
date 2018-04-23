@@ -5,6 +5,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
+#include "ImportOBJ.h"
 #include <string>
 
 class Light
@@ -12,7 +13,7 @@ class Light
     public:
         Light();
 
-        void initialize();
+        void initialize(ImportOBJ importer);
 
         void setUniforms(Shader shadProgram, Camera cam);
 
@@ -57,6 +58,7 @@ class Light
         float specularStrength;
 
         unsigned int lightVAO;
+        unsigned int numCombined;
 };
 
 #endif // LIGHT_H

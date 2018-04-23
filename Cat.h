@@ -13,13 +13,14 @@ class Cat
         void draw(Shader shadProgram);
 
         void changeLock(bool val);
+        void moveCatBy(float X, float Z);
         void goForward(float amt);
-        void strafeRight(float amt);
         void rotateCatBy(float amt);
 
         void setPos(glm::vec3 newPos);
         void setRotation(float newAngle);
         void setScale(float newScale);
+        void reset();
 
         bool getLock();
         glm::vec3 getPos();

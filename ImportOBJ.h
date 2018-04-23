@@ -18,7 +18,7 @@ class ImportOBJ{
         bool debugOutput = false;
 
         int getNumCombined();
-        int getTextID();
+        int getTextID(int num);
 
     private:
         struct CompleteVertex {

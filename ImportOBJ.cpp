@@ -69,7 +69,7 @@ void ImportOBJ::readMTLFile(std::string fName) {
             std::string fileName = line.substr(lastSlashPos+1, line.length()-lastSlashPos).c_str();
             int texture = loadTexture(name + fileName);
             this->map_Kd.push_back(texture);
-            //std::cout << "Ni is: " << curLine << "\n";
+            std::cout << "texture is: " << texture << "\n";
         }
     }
 }
@@ -147,8 +147,10 @@ int ImportOBJ::getNumCombined() {
     return this->combinedData.size();
 }
 
-int ImportOBJ::getTextID() {
-    return this->map_Kd.at(0);
+int ImportOBJ::getTextID(int num) {
+    //std::cout << "MAP-Kd " << map_Kd.at(0) << "\n";
+    return this->map_Kd.at(num);
+
 }
 
 /** Generates VAO from stored vertices and texture coordinates. */
@@ -165,10 +167,10 @@ int ImportOBJ::genOBJ_VAO() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, Normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, Normal));
     glEnableVertexAttribArray(2);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, TexCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, TexCoords));
     glEnableVertexAttribArray(1);
 
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(CompleteVertex), (void*)offsetof(CompleteVertex, DiffuseColor));

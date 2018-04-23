@@ -109,9 +109,9 @@ int main() {
     cat1.initialize(importer);
     mouse.initialize(importer);
     house.initialize(importer);
+    couch.setHasTexture(true);
     couch.initialize(importer, "couch");
     couch.setPos(glm::vec3(-1.0f, -1.0f, 18.0f));
-    couch.setHasTexture(true);
     chair.initialize(importer, "chair");
     chair.setPos(glm::vec3(-12.0f, -2.0f, 20.0f));
     chair.setRotation(-90.0);

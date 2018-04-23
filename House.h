@@ -23,6 +23,9 @@ class House
 
         unsigned int VAO;
         unsigned int numCombined;
+        unsigned int texID1;
+        unsigned int texID2;
+        bool hasTexture;
 };
 
 #endif // HOUSE_H

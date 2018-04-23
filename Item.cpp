@@ -14,7 +14,7 @@ Item::Item()
 void Item::initialize(ImportOBJ importer, std::string name) {
     this->VAO = importer.loadFiles("models/" + name);
     this->numCombined = importer.getNumCombined();
-    if (hasTexture) this->texID = importer.getTextID();
+    if (hasTexture) this->texID = importer.getTextID(0);
 }
 
 void Item::draw(Shader shadProgram) {
@@ -28,20 +28,22 @@ void Item::draw(Shader shadProgram) {
     shadProgram.setMatrix("model", model);
 
     // for lighting
-    shadProgram.setBool("mat.useDiffuseMap", false);
     shadProgram.setBool("mat.useSpecularMap", false);
-    //shadProgram.sampler2D("mat.DiffuseMap", true);
-    //shadProgram.sampler2D("mat.SpecularMap", true);
 
     if (this->hasTexture){
+        shadProgram.setBool("mat.useDiffuseMap", true);
+        shadProgram.setInt("mat.DiffuseMap", 0);
         glActiveTexture(GL_TEXTURE0);
         shadProgram.useOneTex();
         glBindTexture(GL_TEXTURE_2D, this->texID);
+        //std::cout << "TextID = " << this->texID;
     }
     else {
-      glBindVertexArray(this->VAO);
-    glDrawArrays(GL_TRIANGLES, 0, this->numCombined);
+         shadProgram.setBool("mat.useDiffuseMap", false);
     }
+    glBindVertexArray(this->VAO);
+    glDrawArrays(GL_TRIANGLES, 0, this->numCombined);
+
 }
 
 void Item::setPos(glm::vec3 newPos) {this->pos = newPos;}

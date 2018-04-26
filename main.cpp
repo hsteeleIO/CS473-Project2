@@ -27,15 +27,19 @@
 
 void switchToMain(GLFWwindow* window);
 void switchToTitle(GLFWwindow* window);
+void switchToMouseWin(GLFWwindow* window);
+void switchToCatWin(GLFWwindow* window);
 void switchToInstructions(GLFWwindow* window);
 void mainLoopTitleScreen(GLFWwindow* window);
 void mainLoopInstructionScreen(GLFWwindow* window);
+void mouseWinScreen(GLFWwindow* window);
+void catWinScreen(GLFWwindow* window);
 void mainLoopInteractive(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mousePosCallback(GLFWwindow* window, double mX, double mY);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
-void catCatchMouseCheck();
+void catCatchMouseCheck(GLFWwindow* window);
 void reset();
 void processInput(GLFWwindow* window);
 
@@ -65,6 +69,9 @@ House house;
 Item couch;
 Item chair;
 Item table;
+Item duke;
+Item prince;
+Item general;
 
 
 double deltaTime = 0.0;
@@ -80,6 +87,11 @@ int titleVAO;
 int titleTex;
 int instructionVAO;
 int instructionTex;
+int mouseWinVao;
+int mouseWinTex;
+int catWinVao;
+int catWinTex;
+
 // for displayed numbers
 int textVAO;
 int mouseWin = 0;
@@ -87,6 +99,7 @@ int catWin = 0;
 
 int displayMode = 1;
 // 2 = instructions, 1 = title, 0 = interactive
+// 3 = mouse win, 4 = cat win
 
 
 int main() {
@@ -118,6 +131,21 @@ int main() {
     table.initialize(importer, "table");
     table.setPos(glm::vec3(-19.0f, -2.0f, 6.0f));
     table.setRotation(-180.0);
+    duke.setHasTexture(true);
+    duke.initialize(importer, "duke");
+    duke.setPos(glm::vec3(10.0f, 6.0f, -16.0f));
+    duke.setRotation(-90.0);
+    duke.setScale(4);
+    prince.setHasTexture(true);
+    prince.initialize(importer, "prince");
+    prince.setPos(glm::vec3(15.5f, 6.0f, -8.0f));
+    prince.setRotation(185.0);
+    prince.setScale(4);
+    general.setHasTexture(true);
+    general.initialize(importer, "general");
+    general.setPos(glm::vec3(-6.0f, 6.0f, -16.0f));
+    general.setRotation(-90.0);
+    general.setScale(4);
     stdProgram.initialize();
     stdProgramNorm.initialize();
     lightShader.initialize();
@@ -132,10 +160,16 @@ int main() {
     titleTex = loadTexture("textures/title.png", GL_RGBA);
     instructionVAO = rectangleTex(0.0, 10.0, 10.0, 10.0);
     instructionTex = loadTexture("textures/instructions.png", GL_RGBA);
+    mouseWinVao = rectangleTex(0.0, 10.0, 10.0, 10.0);
+    mouseWinTex = loadTexture("textures/mouseWon.png", GL_RGBA);
+    catWinVao = rectangleTex(0.0, 10.0, 10.0, 10.0);
+    catWinTex = loadTexture("textures/catWon.png", GL_RGBA);
 
     while (!glfwWindowShouldClose(window)) {
         if (displayMode == 1) mainLoopTitleScreen(window);
         else if (displayMode == 2) mainLoopInstructionScreen(window);
+        else if (displayMode == 3) mouseWinScreen(window);
+        else if (displayMode == 4) catWinScreen(window);
         else mainLoopInteractive(window);
     }
 
@@ -159,6 +193,23 @@ void switchToTitle(GLFWwindow* window) {
 
     displayMode = 1;
 }
+
+void switchToMouseWin(GLFWwindow* window) {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glDisable(GL_DEPTH_TEST);
+    stdProgram.use();
+
+    displayMode = 3;
+}
+
+void switchToCatWin(GLFWwindow* window) {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glDisable(GL_DEPTH_TEST);
+    stdProgram.use();
+
+    displayMode = 4;
+}
+
 
 void switchToInstructions(GLFWwindow* window) {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -207,6 +258,44 @@ void mainLoopInstructionScreen(GLFWwindow* window) {
     glfwPollEvents();
 }
 
+void mouseWinScreen(GLFWwindow* window) {
+    processInput(window);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    stdProgramNorm.use();
+    stdProgramNorm.setDrawColor(WHITE);
+    stdProgramNorm.setMatrix("view", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("model", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("projection", glm::ortho(.0, 10.0, .0, 10.0, -1.0, 1.0));
+
+    stdProgramNorm.useOneTex();
+    glBindTexture(GL_TEXTURE_2D, mouseWinTex);
+    glBindVertexArray(mouseWinVao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
+
+void catWinScreen(GLFWwindow* window) {
+    processInput(window);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    stdProgramNorm.use();
+    stdProgramNorm.setDrawColor(WHITE);
+    stdProgramNorm.setMatrix("view", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("model", glm::mat4(1.0f));
+    stdProgramNorm.setMatrix("projection", glm::ortho(.0, 10.0, .0, 10.0, -1.0, 1.0));
+
+    stdProgramNorm.useOneTex();
+    glBindTexture(GL_TEXTURE_2D, catWinTex);
+    glBindVertexArray(catWinVao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
+
 void mainLoopInteractive(GLFWwindow* window) {
     glEnable(GL_DEPTH_TEST);
     double currentFrame = glfwGetTime();
@@ -227,6 +316,9 @@ void mainLoopInteractive(GLFWwindow* window) {
     couch.draw(lightShader);
     chair.draw(lightShader);
     table.draw(lightShader);
+    duke.draw(lightShader);
+    prince.draw(lightShader);
+    general.draw(lightShader);
     house.draw(lightShader);
 
     stdProgram.use();
@@ -234,7 +326,8 @@ void mainLoopInteractive(GLFWwindow* window) {
     stdProgram.setMatrix("projection", glm::perspective(glm::radians(45.0), 1.0, 0.1, 100.0));
     stdProgram.setMatrix("view", cam.genViewMatrix());
     stdProgram.setDrawColor(1.0, 0.0, 0.0, 1.0);
-    stdProgram.noTextures();
+    //stdProgram.useOneTex(2);
+
 
     lightSrc.draw(stdProgram);
 
@@ -265,12 +358,19 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     // correspond to the "Start" button on the texture.
     if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE) {
         if (mouseX >= 475 && mouseX <= 636 && mouseY >= 630 && mouseY <= 700) {
-            switchToMain(window);
+            if (displayMode == 1 || displayMode == 2) switchToMain(window);
+            if (displayMode == 3 || displayMode == 4) {
+                reset();
+                switchToMain(window);
+            }
         }
         else if (mouseX >= 103 && mouseX <= 451 && mouseY >= 630 && mouseY <= 700) {
-            if (titleScreen) switchToInstructions(window);
-            else switchToTitle(window);
-            titleScreen = !titleScreen;
+            if (displayMode == 1 || displayMode == 2){
+                if (titleScreen) switchToInstructions(window);
+                else switchToTitle(window);
+                titleScreen = !titleScreen;
+            }
+            if (displayMode == 3 || displayMode == 4) glfwSetWindowShouldClose(window, true);
         }
     }
     //std::cout << "Mouse button: " << button << " with " << action << " and " << mods << " at pos " << mouseX << ", " << mouseY << "\r";
@@ -280,11 +380,15 @@ void mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     if (!cam.getFreeCam()) cam.goForward(camSpeed * deltaTime * yOffset * 50);
 }
 
-void catCatchMouseCheck(){
+void catCatchMouseCheck(GLFWwindow* window){
     glm::vec3 mP = mouse.getPos();
     glm::vec3 cP = cat1.getPos();
     float diff = std::abs(mP.x-cP.x)+std::abs(mP.y-cP.y)+std::abs(mP.z-cP.z);
-    if (diff < 2) mouse.setCheckEscape(true);
+    if (diff < 2) {
+        mouse.setCheckEscape(true);
+        displayMode = 4;
+        switchToCatWin(window);
+    }
     //std::cout << "diff: " << diff << "\r";
 }
 
@@ -333,7 +437,11 @@ void processInput(GLFWwindow* window) {
         if (glfwGetKey(window, GLFW_KEY_R)) reset();
         cam.setLookAt(glm::vec3(0.0, 0.0, 0.0));
         mouse.checkEscape();
-        catCatchMouseCheck();
+        if (mouse.hasEscaped() && displayMode != 4) {
+            displayMode = 3;
+            switchToMouseWin(window);
+        }
+        catCatchMouseCheck(window);
     }
     else {
         if (glfwGetKey(window, GLFW_KEY_W)) cam.goForward(camSpeed * deltaTime);
@@ -343,4 +451,5 @@ void processInput(GLFWwindow* window) {
         if (glfwGetKey(window, GLFW_KEY_Q)) cam.goUp(camSpeed * deltaTime);
         if (glfwGetKey(window, GLFW_KEY_E)) cam.goUp(-camSpeed * deltaTime);
     }
+
 }

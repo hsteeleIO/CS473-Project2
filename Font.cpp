@@ -54,10 +54,24 @@ void Font::initialize() {
 
 /////////////////////////////// Drawing text
 void Font::drawText(std::string s, glm::vec2 start, Shader sProgram) {
+    float x = start.x;
+    float y = start.y;
+    int c;
+    int charVAO;
+    for (int i = 0; i < s.length(); i++) {
+        c = (int)s.at(i);
+        int width = getCharWidth(c);
+        charVAO = getCharVAO(c);
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(x, y, 1.0));
+        model = glm::scale(model, glm::vec3(this->scale));
 
-    // ICE: Draw the string with its lower left-hand corner at the start vector
-    // Use the character's width to adjust the spacing of each letter
-
+        sProgram.setMatrix("model", model);
+        glBindTexture(GL_TEXTURE_2D, texNumber);
+        glBindVertexArray(charVAO);
+        //glDrawArrays(GL_TRIANGLES_FAN, 0, 4);
+        x += width;
+    }
 }
 
 

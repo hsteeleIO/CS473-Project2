@@ -18,7 +18,7 @@ class ImportOBJ{
         bool debugOutput = false;
 
         int getNumCombined();
-        int getTextID(int num);
+        int getTextID(std::string name);
 
     private:
         struct CompleteVertex {
@@ -36,6 +36,7 @@ class ImportOBJ{
         void reset();
 
         int curMat = -1;
+        std::string baseName;
 
         std::vector<glm::vec3> vertices;
         std::vector<glm::vec3> normals;
@@ -45,7 +46,7 @@ class ImportOBJ{
         std::vector<glm::vec3> matDiffuse;
         std::vector<glm::vec3> matSpecular;
         std::vector<float> matShiny;
-        std::vector<int> map_Kd;
+        std::map<std::string, int> map_Kd;
 
         void readLineFace(std::string line);
         void readFace(std::string lineSegment);

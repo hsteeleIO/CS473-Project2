@@ -18,7 +18,9 @@ int ImportOBJ::loadFiles(std::string baseName) {
     std::string objName = baseName + ".obj";
     this->readMTLFile(matName);
     this->readOBJFile(objName);
+    this->baseName = baseName;
 
+    //std::cout << "baseName = " << this->baseName << "\n";
     return this->genOBJ_VAO();
 }
 
@@ -67,9 +69,13 @@ void ImportOBJ::readMTLFile(std::string fName) {
             int lastSlashPos = line.rfind("\\");
             std::string name = "textures\\";
             std::string fileName = line.substr(lastSlashPos+1, line.length()-lastSlashPos).c_str();
-            int texture = loadTexture(name + fileName);
-            this->map_Kd.push_back(texture);
-            std::cout << "texture is: " << texture << "\n";
+            int lastDotPos = line.rfind(".");
+            int texture = 0;
+            std::string extensionName = line.substr(lastDotPos+1, line.length()-lastSlashPos).c_str();
+            if (extensionName == "png") texture = loadTexture(name + fileName, GL_RGBA);
+            if (extensionName == "jpg") texture = loadTexture(name + fileName);
+            //this->map_Kd.push_back(texture);
+            this->map_Kd.insert(std::pair<std::string, int>(fName, texture));
         }
     }
 }
@@ -147,10 +153,10 @@ int ImportOBJ::getNumCombined() {
     return this->combinedData.size();
 }
 
-int ImportOBJ::getTextID(int num) {
-    //std::cout << "MAP-Kd " << map_Kd.at(0) << "\n";
-    return this->map_Kd.at(num);
-
+int ImportOBJ::getTextID(std::string name) {
+    std::map<std::string, int> Kd = this->map_Kd;
+    int ID = Kd[name + ".mtl"];
+    return ID;
 }
 
 /** Generates VAO from stored vertices and texture coordinates. */

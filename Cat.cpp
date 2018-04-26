@@ -59,6 +59,7 @@ void Cat::setScale(float newScale) {this->scale = newScale;}
 void Cat::reset() {
     this->pos = glm::vec3(0.0f, 0.0f, 0.0f);
     this->rotateAngle = -90.0;
+
 }
 
 bool Cat::getLock() {return this->lock;}

@@ -1,0 +1,23 @@
+# Blender MTL File: 'duke.blend'
+# Material Count: 2
+
+newmtl Duke
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.150280 0.265987
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd  C:\\Users\\x94364\\Desktop\\Projects\\CS473-Project2\\textures\\duke.png
+
+newmtl Material
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2

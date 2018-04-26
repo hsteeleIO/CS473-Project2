@@ -6,9 +6,9 @@ Light::Light()
     this->color = glm::vec3(1.0, 1.0, 1.0);
     this->scale = 1;
 
-    this->ambientStrength = 1.0;
-    this->diffuseStrength = .80;
-    this->specularStrength = 1.0;
+    this->ambientStrength = .80;
+    this->diffuseStrength = .60;
+    this->specularStrength = .60;
 }
 
 void Light::initialize(ImportOBJ importer){

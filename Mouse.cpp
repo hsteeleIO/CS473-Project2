@@ -53,7 +53,7 @@ void Mouse::moveMouseBy(float X, float Z) {
 void Mouse::setPos(glm::vec3 newPos) {this->pos = newPos;}
 void Mouse::setScale(float newScale) {this->scale = newScale;}
 void Mouse::setCheckEscape(bool check) {this->Escape = check;}
-void Mouse::checkEscape() {if (this->pos.z <= -14.5 && this->pos.x > -1.2 && this->pos.x < 2.5 ) this->Escape = true;}
+void Mouse::checkEscape() {if (this->pos.z <= -15.5 && this->pos.x > -1.2 && this->pos.x < 2.5 ) this->Escape = true;}
 
 void Mouse::reset() {
     this->pos = glm::vec3(-3.0f, -1.0f, 3.0f);

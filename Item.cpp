@@ -14,7 +14,7 @@ Item::Item()
 void Item::initialize(ImportOBJ importer, std::string name) {
     this->VAO = importer.loadFiles("models/" + name);
     this->numCombined = importer.getNumCombined();
-    if (hasTexture) this->texID = importer.getTextID(0);
+    if (hasTexture) this->texID = importer.getTextID("models/" + name);
 }
 
 void Item::draw(Shader shadProgram) {
@@ -32,9 +32,8 @@ void Item::draw(Shader shadProgram) {
 
     if (this->hasTexture){
         shadProgram.setBool("mat.useDiffuseMap", true);
-        shadProgram.setInt("mat.DiffuseMap", 0);
+        shadProgram.setInt("mat.DiffuseMap", this->texID);
         glActiveTexture(GL_TEXTURE0);
-        shadProgram.useOneTex();
         glBindTexture(GL_TEXTURE_2D, this->texID);
         //std::cout << "TextID = " << this->texID;
     }
